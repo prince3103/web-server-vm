@@ -19,6 +19,8 @@ responses={200: 'Successful Operation', 404: 'Error: Resource Not Found'})
 class SoftSkill(Resource):
     
     def get(self, job_role):
+        job_role = job_role.strip()
+        job_role = job_role.replace(" ", "_")
         job_result = SkillDatabase().getData(job_role=job_role, skill_type='soft skill')
         if job_result == []:
             return {'soft_skills' : 'No soft_skill found for given input.'}, 404
@@ -31,6 +33,8 @@ responses={200: 'Successful Operation', 404: 'Error: Resource Not Found'})
 class HardSkill(Resource):
     
     def get(self, job_role):
+        job_role = job_role.strip()
+        job_role = job_role.replace(" ", "_")
         job_result = SkillDatabase().getData(job_role=job_role, skill_type='hard skill')
         if job_result == []:
             return {'hard_skills' : 'No hard_skill found for given input.'}, 404
