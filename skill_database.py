@@ -5,7 +5,12 @@ class SkillDatabase:
         pass
 
     def getData(self, job_role, skill_type):
-    
+        '''
+        conn : sqlite connection
+        cursor : cursor object
+        skill_type : checks if skill is hard or soft skill
+        data : contains the data fetch from database
+        '''
         try:
             #Connecting to sqlite
             conn = sqlite3.connect('career_map.db')
