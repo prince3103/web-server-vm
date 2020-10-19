@@ -12,6 +12,26 @@ api = Api(blueprint, doc = '/documentation', version='1.0.0', title='Career Map'
 app.register_blueprint(blueprint)
 
 
+ns = api.namespace('skills', description='Operations on Soft and Hard Skills')
+@ns.route('/<string:job_role>')
+@ns.doc(params={'job_role': {'description': 'Input Job Role for which you require skills'}},
+responses={200: 'Successful Operation', 404: 'Error: Resource Not Found'})
+class SoftSkill(Resource):
+    def get(self, job_role):
+        '''
+        This function is called when a get request is made by client app  on skills endpoint.
+
+        job_role : Job Role input by user
+        job_result : The skills, frequency, variants extracted from a database for a job role
+        '''
+        job_role = job_role.strip()
+        job_role = job_role.replace(" ", "_")
+        job_result = SkillDatabase().getData(job_role=job_role, skill_type='both skill')
+        if job_result == []:
+            return {'skills' : 'No skill found for given input.'}, 404
+        return {'skills' : job_result}, 200
+
+
 ns = api.namespace('soft_skills', description='Operations on Soft Skills')
 @ns.route('/<string:job_role>')
 @ns.doc(params={'job_role': {'description': 'Input Job Role for which you require soft skills'}},
