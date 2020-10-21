@@ -20,11 +20,11 @@ class SkillDatabase:
             
             #Query to select data with following condition
             if skill_type=='both skill':
-                cursor.execute("SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE NOCASE ORDER BY FREQUENCY DESC;" %job_role)
+                cursor.execute("SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE NOCASE AND SKILL_NAME!='none' ORDER BY FREQUENCY DESC;" %job_role)
             elif skill_type=='soft skill':
-                cursor.execute("SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE NOCASE AND SKILL_TYPE IS 'SOFT' ORDER BY FREQUENCY DESC;" %job_role)
+                cursor.execute("SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE NOCASE AND SKILL_TYPE IS 'Soft' AND SKILL_NAME!='none' ORDER BY FREQUENCY DESC;" %job_role)
             else:
-                cursor.execute("SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE NOCASE AND SKILL_TYPE IS 'HARD' ORDER BY FREQUENCY DESC;" %job_role)
+                cursor.execute("SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE NOCASE AND SKILL_TYPE IS 'Hard' AND SKILL_NAME!='none' ORDER BY FREQUENCY DESC;" %job_role)
             #statement to fetch data
             data = cursor.fetchall()
 
