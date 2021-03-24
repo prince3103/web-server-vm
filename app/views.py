@@ -40,7 +40,7 @@ class Skill(Resource):
         job_role = job_role.replace(" ", "_")
 
         # sending get request and saving the response as response object
-        r = requests.get(url = "http://10.128.0.3/data?job_role={job_role}&skill_type=both skill".format(job_role=job_role))
+        r = requests.get(url = "http://127.0.0.1:8080/data?job_role={job_role}&skill_type=both skill".format(job_role=job_role))
 
         # extracting data in json format
         job_result = r.json()
@@ -72,7 +72,7 @@ class SoftSkill(Resource):
         '''
         job_role = job_role.strip()
         job_role = job_role.replace(" ", "_")
-        r = requests.get(url = "http://10.128.0.3/data?job_role={job_role}&skill_type=soft skill".format(job_role=job_role))
+        r = requests.get(url = "http://127.0.0.1:8080/data?job_role={job_role}&skill_type=soft skill".format(job_role=job_role))
 
         # extracting data in json format
         job_result = r.json()
@@ -104,7 +104,7 @@ class HardSkill(Resource):
         '''
         job_role = job_role.strip()
         job_role = job_role.replace(" ", "_")
-        r = requests.get(url = "http://10.128.0.3/data?job_role={job_role}&skill_type=hard skill".format(job_role=job_role))
+        r = requests.get(url = "http://127.0.0.1:8080/data?job_role={job_role}&skill_type=hard skill".format(job_role=job_role))
 
         # extracting data in json format
         job_result = r.json()
