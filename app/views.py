@@ -69,7 +69,7 @@ class SoftSkill(Resource):
         Returns
         -------
         Dictionary
-        '''git
+        '''
         job_role = job_role.strip()
         job_role = job_role.replace(" ", "_")
         r = requests.get(url = "http://10.128.0.6:8080/data?job_role={job_role}&skill_type=soft skill".format(job_role=job_role))
