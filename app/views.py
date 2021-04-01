@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restplus import Api, Resource
-import requests
+from skill_database import SkillDatabase
 
 from app import app
 
@@ -13,7 +13,7 @@ api = Api(blueprint, doc='/documentation', version='1.0.0', title='Career Map',
 app.register_blueprint(blueprint)
 
 
-ns = api.namespace('skills', description='Operations on Soft and Hard Skills')
+ns = api.namespace('skills', description='Operations for on Soft and Hard Skills')
 
 
 @ns.route('/<string:job_role>')
@@ -38,14 +38,11 @@ class Skill(Resource):
         '''
         job_role = job_role.strip()
         job_role = job_role.replace(" ", "_")
-
-        # sending get request and saving the response as response object
-        r = requests.get(url = "http://10.128.0.6:8080/data?job_role={job_role}&skill_type=both skill".format(job_role=job_role))
-
-        # extracting data in json format
-        job_result = r.json()
-
-        return job_result
+        job_result = SkillDatabase.get_data(
+            job_role=job_role, skill_type='both skill')
+        if job_result == []:
+            return {'skills': 'No skill found for given input.'}, 404
+        return {'skills': job_result}, 200
 
 
 ns = api.namespace('soft_skills', description='Operations on Soft Skills')
@@ -72,12 +69,11 @@ class SoftSkill(Resource):
         '''
         job_role = job_role.strip()
         job_role = job_role.replace(" ", "_")
-        r = requests.get(url = "http://10.128.0.6:8080/data?job_role={job_role}&skill_type=soft skill".format(job_role=job_role))
-
-        # extracting data in json format
-        job_result = r.json()
-
-        return job_result
+        job_result = SkillDatabase.get_data(
+            job_role=job_role, skill_type='soft skill')
+        if job_result == []:
+            return {'soft_skills': 'No soft_skill found for given input.'}, 404
+        return {'soft_skills': job_result}, 200
 
 
 ns = api.namespace('hard_skills', description='Operations on Hard Skills')
@@ -104,9 +100,8 @@ class HardSkill(Resource):
         '''
         job_role = job_role.strip()
         job_role = job_role.replace(" ", "_")
-        r = requests.get(url = "http://10.128.0.6:8080/data?job_role={job_role}&skill_type=hard skill".format(job_role=job_role))
-
-        # extracting data in json format
-        job_result = r.json()
-
-        return job_result
+        job_result = SkillDatabase.get_data(
+            job_role=job_role, skill_type='hard skill')
+        if job_result == []:
+            return {'hard_skills': 'No hard_skill found for given input.'}, 404
+        return {'hard_skills': job_result}, 200
