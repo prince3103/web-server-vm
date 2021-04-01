@@ -23,7 +23,7 @@ class SkillDatabase:
         try:
             connection_config_dict = {
                 'user': 'root',
-                'password': '',
+                'password': 'Princemysql@321',
                 'host': '10.128.0.6',
                 'port': '3306',
                 'database': 'career_map',
