@@ -1,9 +1,5 @@
-"""
-This module extracts skill name, frequency and variants breakdown for a
-given job role and skill type
-"""
-import sqlite3
-
+import mysql.connector
+from mysql.connector import Error
 
 class SkillDatabase:
     def __init__(self):
@@ -25,37 +21,48 @@ class SkillDatabase:
         List
         '''
         try:
-            # Connecting to sqlite
-            conn = sqlite3.connect('career_map.db')
+            connection_config_dict = {
+                'user': 'root',
+                'password': '',
+                'host': '10.128.0.6',
+                'port': '3306',
+                'database': 'career_map',
+                'raise_on_warnings': True,
+                'use_pure': False,
+                'autocommit': True,
+                'pool_size': 5
+            }
+            connection = mysql.connector.connect(**connection_config_dict)
 
-            # Creating a cursor object using the cursor() method
-            cursor = conn.cursor()
+            if connection.is_connected():
+                db_Info = connection.get_server_info()
+                print("Connected to MySQL Server version ", db_Info)
+                # Creating a cursor object using the cursor() method
+                cursor = connection.cursor()
 
-            # Query to select data with following condition
-            if skill_type == 'both skill':
-                cursor.execute(
-                    "SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE"
-                    " NOCASE AND SKILL_NAME!='none' ORDER BY FREQUENCY DESC;" % job_role)
-            elif skill_type == 'soft skill':
-                cursor.execute(
-                    "SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE"
-                    " NOCASE AND SKILL_TYPE IS 'Soft' AND SKILL_NAME!='none' ORDER"
-                    " BY FREQUENCY DESC;" % job_role)
-            else:
-                cursor.execute(
-                    "SELECT * FROM SKILLS WHERE JOB_ROLE IS '%s' COLLATE"
-                    " NOCASE AND SKILL_TYPE IS 'Hard' AND SKILL_NAME!='none' ORDER"
-                    " BY FREQUENCY DESC;" % job_role)
-            # statement to fetch data""
-            data = cursor.fetchall()
+                # Query to select data with following condition
+                if skill_type == 'both skill':
+                    cursor.execute(
+                        "SELECT * FROM SKILLS;")
+                elif skill_type == 'soft skill':
+                    cursor.execute(
+                        "SELECT * FROM SKILLS WHERE JOB_ROLE = '%s' COLLATE"
+                        " NOCASE AND SKILL_TYPE IS 'Soft' AND SKILL_NAME!='none' ORDER"
+                        " BY FREQUENCY DESC;" % job_role)
+                else:
+                    cursor.execute(
+                        "SELECT * FROM SKILLS WHERE JOB_ROLE = '%s' COLLATE"
+                        " NOCASE AND SKILL_TYPE IS 'Hard' AND SKILL_NAME!='none' ORDER"
+                        " BY FREQUENCY DESC;" % job_role)
+                # statement to fetch data""
+                data = cursor.fetchall()
 
-            # Commit your changes in the database
-            conn.commit()
+                # Commit your changes in the database
+                connection.commit()
+                cursor.close()
+                connection.close()
+                print("MySQL connection is closed")
+                return data
 
-            # Closing the connection
-            conn.close()
-
-            return data
-        except Exception as e:
-            print("Error:", e)
-            return []
+        except Error as e:
+            print("Error while connecting to MySQL", e)
