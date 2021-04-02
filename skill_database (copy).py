@@ -3,7 +3,8 @@ from mysql.connector import Error
 
 class SkillDatabase:
     def __init__(self):
-        get_data(job_role="digtal_marketing", skill_type="both skill")
+        pass
+
 
     @classmethod
     def get_data(cls, job_role, skill_type):
@@ -66,3 +67,7 @@ class SkillDatabase:
 
         except Error as e:
             print("Error while connecting to MySQL", e)
+
+
+data = SkillDatabase().get_data(job_role="digtal_marketing", skill_type="both skill")
+print(data)
