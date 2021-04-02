@@ -3,10 +3,10 @@ from mysql.connector import Error
 
 class SkillDatabase:
     def __init__(self):
-        pass
+        get_data(job_role="digtal_marketing", skill_type="both skill")
 
     @classmethod
-    def get_data(cls, job_role="digtal_marketing", skill_type="both skill"):
+    def get_data(cls, job_role, skill_type):
         '''
         This function establishes connection with database and extracts job skill,
         frequency and variants breakdown for a given job role and skill type
