@@ -24,7 +24,7 @@ class SkillDatabase:
             connection_config_dict = {
                 'user': 'root',
                 'password': 'Root@123',
-                'host': '10.25.160.5',
+                'host': '127.0.0.1',
                 'port': '3306',
                 'database': 'career_map',
                 'raise_on_warnings': True,
